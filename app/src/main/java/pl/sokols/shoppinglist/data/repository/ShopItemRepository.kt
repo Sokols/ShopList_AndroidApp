@@ -11,7 +11,8 @@ class ShopItemRepository @Inject constructor(
     private val shopItemDao: ShopItemDao
 ) {
 
-    val allShopItems: Flow<List<ShopItem>> = shopItemDao.getAllShopItems()
+    fun getAllShopItems(shopItemId: Int): Flow<List<ShopItem>> =
+        shopItemDao.findShopItemsForList(shopItemId)
 
     suspend fun deleteShopItem(shopItem: ShopItem) = shopItemDao.deleteShopItem(shopItem)
 

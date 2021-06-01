@@ -1,17 +1,17 @@
 package pl.sokols.shoppinglist.data.entities
 
 import androidx.room.ColumnInfo
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.*
 
 @Entity(tableName = "shop_lists")
 data class ShopList(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
     val name: String,
-    @Embedded(prefix = "list_")
-    val items: List<ShopItem>,
+    val date: Date = Calendar.getInstance().time,
     @ColumnInfo(name = "is_active")
-    val isActive: Boolean
-)
+    val isActive: Boolean = true
+) {
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
+}

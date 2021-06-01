@@ -4,12 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import pl.sokols.shoppinglist.data.dao.ShopItemDao
 import pl.sokols.shoppinglist.data.dao.ShopListDao
 import pl.sokols.shoppinglist.data.entities.ShopItem
 import pl.sokols.shoppinglist.data.entities.ShopList
 
-@Database(entities = [ShopItem::class, ShopList::class], version = 1)
+@Database(entities = [ShopItem::class, ShopList::class], version = 1, exportSchema = false)
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun shopItemDao(): ShopItemDao

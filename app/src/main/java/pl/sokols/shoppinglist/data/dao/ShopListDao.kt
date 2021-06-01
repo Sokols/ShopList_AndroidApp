@@ -7,6 +7,7 @@ import pl.sokols.shoppinglist.data.entities.ShopList
 @Dao
 interface ShopListDao {
 
+    @Transaction
     @Query("SELECT * FROM shop_lists")
     fun getAllShopLists(): Flow<List<ShopList>>
 

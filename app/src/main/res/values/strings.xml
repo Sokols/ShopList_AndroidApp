@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Shopping List</string>
+    <string name="shop_item_image_description">Basket image</string>
+    <string name="amount_format">Amount: %d</string>
+    <string name="check_image_description">Check image</string>
+    <string name="fab_content_desc">FAB button</string>
+    <string name="shop_list_image_description">Shop list image</string>
+    <string name="done_format">Groceries done: %s</string>
+    <string name="list_id">list_id</string>
+    <string name="provide_list_name">Provide list name:</string>
+    <string name="name">Name</string>
+    <string name="cancel">Cancel</string>
 </resources>
