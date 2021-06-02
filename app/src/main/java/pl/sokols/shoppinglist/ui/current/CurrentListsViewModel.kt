@@ -20,4 +20,8 @@ class CurrentListsViewModel @Inject constructor(
     fun addShopList(shopList: ShopList) = viewModelScope.launch {
         shopListRepository.insertShopList(shopList)
     }
+
+    fun deleteShopList(deletedList: ShopList) = viewModelScope.launch{
+        shopListRepository.deleteShopList(deletedList)
+    }
 }

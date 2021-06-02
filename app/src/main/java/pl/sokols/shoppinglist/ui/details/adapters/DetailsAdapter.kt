@@ -24,8 +24,6 @@ class DetailsAdapter(
             binding.shopItemCheckImageView.setOnClickListener {
                 onItemClickListener.onItemClickListener(shopItem)
             }
-
-
         }
     }
 

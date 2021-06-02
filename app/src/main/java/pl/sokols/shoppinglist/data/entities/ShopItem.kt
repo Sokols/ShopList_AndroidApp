@@ -16,13 +16,14 @@ import androidx.room.PrimaryKey
     )]
 )
 data class ShopItem(
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "shop_item_id")
-    val shopItemId: Int = 0,
-    val name: String,
-    val amount: Int,
+    var name: String?,
+    var amount: Int?,
     @ColumnInfo(name = "shop_list_id")
     val shopListId: Int,
     @ColumnInfo(name = "is_checked")
     val isChecked: Boolean = false
-)
+) {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "shop_item_id")
+    var shopItemId: Int = 0
+}

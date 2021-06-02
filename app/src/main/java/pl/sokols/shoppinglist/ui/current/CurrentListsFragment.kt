@@ -11,6 +11,9 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.shoppinglist.R
 import pl.sokols.shoppinglist.data.entities.ShopList
@@ -19,12 +22,9 @@ import pl.sokols.shoppinglist.ui.current.adapters.ListsAdapter
 import pl.sokols.shoppinglist.utils.DividerItemDecorator
 import pl.sokols.shoppinglist.utils.OnItemClickListener
 
+
 @AndroidEntryPoint
 class CurrentListsFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = CurrentListsFragment()
-    }
 
     private lateinit var listsAdapter: ListsAdapter
     private lateinit var binding: CurrentListsFragmentBinding
@@ -52,6 +52,7 @@ class CurrentListsFragment : Fragment() {
                 )!!
             )
         )
+        addSwipeToDelete()
 
         binding.addListFAB.setOnClickListener {
             addNewList()
@@ -59,8 +60,10 @@ class CurrentListsFragment : Fragment() {
     }
 
     private fun setObservers() {
-        viewModel.items.observe(viewLifecycleOwner, {
-            listsAdapter.submitList(it)
+        viewModel.items.observe(viewLifecycleOwner, { shopList ->
+            listsAdapter.submitList(shopList) {
+                binding.currentListsRecyclerView.scrollToPosition(0)
+            }
         })
     }
 
@@ -70,25 +73,51 @@ class CurrentListsFragment : Fragment() {
         }
     }
 
-    private fun addNewList() {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-        builder.setTitle(getString(R.string.provide_list_name))
+    private fun addSwipeToDelete() {
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val deletedList: ShopList =
+                    listsAdapter.currentList[viewHolder.adapterPosition]
 
+                viewModel.deleteShopList(deletedList)
+
+                Snackbar.make(
+                    requireView(),
+                    String.format(getString(R.string.deleted), deletedList.name),
+                    Snackbar.LENGTH_LONG
+                )
+                    .setAction(getString(R.string.undo)) {
+                        viewModel.addShopList(deletedList)
+                    }.show()
+            }
+        }).attachToRecyclerView(binding.currentListsRecyclerView)
+    }
+
+    private fun addNewList() {
         val input = EditText(requireContext())
         input.hint = getString(R.string.name)
         input.inputType = InputType.TYPE_CLASS_TEXT
         input.setPadding(resources.getDimension(R.dimen.image_padding).toInt())
-        builder.setView(input)
-        builder.setCancelable(false)
 
-        builder.setPositiveButton(getString(R.string.ok)) { _, _ ->
-            if (input.text.isNotEmpty()) {
-                viewModel.addShopList(
-                    ShopList(input.text.toString())
-                )
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.provide_list_name))
+            .setView(input)
+            .setCancelable(false)
+            .setPositiveButton(getString(R.string.ok)) { _, _ ->
+                if (input.text.isNotEmpty()) {
+                    viewModel.addShopList(
+                        ShopList(input.text.toString())
+                    )
+                }
             }
-        }
-        builder.setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.cancel() }
-        builder.show()
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.cancel() }
+            .show()
     }
 }

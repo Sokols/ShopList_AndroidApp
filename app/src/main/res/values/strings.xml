@@ -10,4 +10,11 @@
     <string name="provide_list_name">Provide list name:</string>
     <string name="name">Name</string>
     <string name="cancel">Cancel</string>
+    <string name="deleted">Removed: %s</string>
+    <string name="undo">Undo</string>
+    <string name="cannot_be_empty">This value cannot be empty!</string>
+    <string name="amount">Amount</string>
+    <string name="provide_item_dialog">Provide item dialog</string>
+    <string name="enter_data">Enter data</string>
+    <string name="apply">Apply</string>
 </resources>

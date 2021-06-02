@@ -8,7 +8,7 @@ import pl.sokols.shoppinglist.data.entities.ShopList
 interface ShopListDao {
 
     @Transaction
-    @Query("SELECT * FROM shop_lists")
+    @Query("SELECT * FROM shop_lists ORDER BY date DESC")
     fun getAllShopLists(): Flow<List<ShopList>>
 
     @Delete

@@ -11,6 +11,7 @@ import pl.sokols.shoppinglist.data.entities.ShopList
 import pl.sokols.shoppinglist.databinding.ShopListListitemBinding
 import pl.sokols.shoppinglist.utils.OnItemClickListener
 import pl.sokols.shoppinglist.utils.ShopListDiffCallback
+import pl.sokols.shoppinglist.utils.Utils
 
 class ListsAdapter(
     private val onItemClickListener: OnItemClickListener
@@ -28,7 +29,7 @@ class ListsAdapter(
             }
 
             binding.shopListLayout.setOnClickListener {
-                val bundle = bundleOf(it.resources.getString(R.string.list_id) to shopList.id)
+                val bundle = bundleOf(Utils.SHOP_LIST_ID_KEY to shopList.id)
                 it.findNavController()
                     .navigate(R.id.action_currentListsFragment_to_listDetailsFragment, bundle)
             }

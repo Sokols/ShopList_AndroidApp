@@ -10,5 +10,7 @@
 
     <color name="default_color">#58c454</color>
     <color name="second_default_color">#3F933C</color>
+    <color name="red">#C00D00</color>
+    <color name="mtrl_textinput_default_box_stroke_color">@color/default_color</color>
 
 </resources>
