@@ -69,7 +69,9 @@ class ListDetailsFragment : Fragment() {
 
     private fun setObservers() {
         viewModel.items.observe(viewLifecycleOwner, { shopItems ->
-            detailsAdapter.submitList(shopItems) {
+            val clones = mutableListOf<ShopItem>()
+            shopItems.forEach { item -> clones.add(item.clone()) }
+            detailsAdapter.submitList(clones) {
                 binding.listDetailsRecyclerView.scrollToPosition(0)
             }
         })
@@ -77,7 +79,18 @@ class ListDetailsFragment : Fragment() {
 
     private val onItemClickListener = object : OnItemClickListener {
         override fun onItemClickListener(item: Any) {
-//            TODO("Not yet implemented")
+            val shopItem = item as ShopItem
+            shopItem.isChecked = !shopItem.isChecked
+            viewModel.updateShopItem(shopItem)
+            Snackbar.make(
+                requireView(),
+                if (shopItem.isChecked) {
+                    getString(R.string.checked)
+                } else {
+                    getString(R.string.unchecked)
+                },
+                Snackbar.LENGTH_LONG
+            ).show()
         }
     }
 
@@ -90,6 +103,7 @@ class ListDetailsFragment : Fragment() {
             ): Boolean {
                 return false
             }
+
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val deletedItem: ShopItem =
                     detailsAdapter.currentList[viewHolder.adapterPosition]

@@ -7,10 +7,10 @@ import java.util.*
 
 @Entity(tableName = "shop_lists")
 data class ShopList(
-    val name: String,
-    val date: Date = Calendar.getInstance().time,
+    var name: String,
+    var date: Date = Calendar.getInstance().time,
     @ColumnInfo(name = "is_active")
-    val isActive: Boolean = true
+    var isActive: Boolean = true
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0

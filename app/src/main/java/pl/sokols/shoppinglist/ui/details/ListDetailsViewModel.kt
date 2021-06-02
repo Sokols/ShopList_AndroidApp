@@ -25,4 +25,8 @@ class ListDetailsViewModel @Inject constructor(
     fun deleteShopItem(shopItem: ShopItem) = viewModelScope.launch {
         shopItemRepository.deleteShopItem(shopItem)
     }
+
+    fun updateShopItem(shopItem: ShopItem) = viewModelScope.launch {
+        shopItemRepository.updateShopItemChecked(shopItem.shopItemId, shopItem.isChecked)
+    }
 }

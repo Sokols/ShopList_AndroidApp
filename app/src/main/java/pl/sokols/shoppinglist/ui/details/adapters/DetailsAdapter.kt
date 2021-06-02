@@ -2,8 +2,10 @@ package pl.sokols.shoppinglist.ui.details.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import pl.sokols.shoppinglist.R
 import pl.sokols.shoppinglist.data.entities.ShopItem
 import pl.sokols.shoppinglist.databinding.ShopItemListitemBinding
 import pl.sokols.shoppinglist.ui.details.adapters.DetailsAdapter.DetailsViewHolder
@@ -19,6 +21,12 @@ class DetailsAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(shopItem: ShopItem, onItemClickListener: OnItemClickListener) {
+            if (shopItem.isChecked) {
+                binding.shopItemCheckImageView.setImageResource(R.drawable.ic_baseline_check_circle_24)
+            } else {
+                binding.shopItemCheckImageView.setImageResource(R.drawable.ic_baseline_check_circle_outline_24)
+            }
+
             binding.shopItem = shopItem
 
             binding.shopItemCheckImageView.setOnClickListener {

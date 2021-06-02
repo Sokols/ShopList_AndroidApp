@@ -13,20 +13,14 @@ import pl.sokols.shoppinglist.utils.OnItemClickListener
 import pl.sokols.shoppinglist.utils.ShopListDiffCallback
 import pl.sokols.shoppinglist.utils.Utils
 
-class ListsAdapter(
-    private val onItemClickListener: OnItemClickListener
-) : ListAdapter<ShopList, ListsAdapter.ListsViewHolder>(ShopListDiffCallback) {
+class ListsAdapter : ListAdapter<ShopList, ListsAdapter.ListsViewHolder>(ShopListDiffCallback) {
 
     inner class ListsViewHolder(
         private val binding: ShopListListitemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(shopList: ShopList, onItemClickListener: OnItemClickListener) {
+        fun bind(shopList: ShopList) {
             binding.shopList = shopList
-
-            binding.shopListCheckImageView.setOnClickListener {
-                onItemClickListener.onItemClickListener(shopList)
-            }
 
             binding.shopListLayout.setOnClickListener {
                 val bundle = bundleOf(Utils.SHOP_LIST_ID_KEY to shopList.id)
@@ -47,6 +41,6 @@ class ListsAdapter(
     }
 
     override fun onBindViewHolder(holder: ListsViewHolder, position: Int) {
-        holder.bind(getItem(position), onItemClickListener)
+        holder.bind(getItem(position))
     }
 }

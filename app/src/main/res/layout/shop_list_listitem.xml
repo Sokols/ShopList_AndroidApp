@@ -58,19 +58,5 @@
             app:layout_constraintStart_toEndOf="@+id/shopListImageView"
             app:layout_constraintTop_toBottomOf="@+id/shopListNameTextView"
             app:layout_constraintVertical_bias="0.0" />
-
-        <ImageView
-            android:id="@+id/shopListCheckImageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:contentDescription="@string/check_image_description"
-            android:padding="@dimen/image_padding"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_check_circle_outline_24"
-            app:tint="?attr/colorPrimary" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

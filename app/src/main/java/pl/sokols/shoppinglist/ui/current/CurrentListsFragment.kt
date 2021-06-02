@@ -1,14 +1,10 @@
 package pl.sokols.shoppinglist.ui.current
 
-import android.app.AlertDialog
 import android.os.Bundle
-import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -21,6 +17,7 @@ import pl.sokols.shoppinglist.databinding.CurrentListsFragmentBinding
 import pl.sokols.shoppinglist.ui.current.adapters.ListsAdapter
 import pl.sokols.shoppinglist.utils.DividerItemDecorator
 import pl.sokols.shoppinglist.utils.OnItemClickListener
+import pl.sokols.shoppinglist.utils.ShopListDialog
 
 
 @AndroidEntryPoint
@@ -35,7 +32,7 @@ class CurrentListsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = CurrentListsFragmentBinding.inflate(inflater, container, false)
-        listsAdapter = ListsAdapter(onItemClickListener)
+        listsAdapter = ListsAdapter()
         setComponents()
         setObservers()
         return binding.root
@@ -52,6 +49,8 @@ class CurrentListsFragment : Fragment() {
                 )!!
             )
         )
+
+        addSwipeToArchive()
         addSwipeToDelete()
 
         binding.addListFAB.setOnClickListener {
@@ -67,10 +66,31 @@ class CurrentListsFragment : Fragment() {
         })
     }
 
-    private val onItemClickListener = object : OnItemClickListener {
-        override fun onItemClickListener(item: Any) {
-//            TODO("Not yet implemented")
-        }
+    private fun addSwipeToArchive() {
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val archivedList: ShopList = listsAdapter.currentList[viewHolder.adapterPosition]
+                archivedList.isActive = !archivedList.isActive
+                viewModel.updateShopList(archivedList)
+
+                Snackbar.make(
+                    requireView(),
+                    String.format(getString(R.string.archived), archivedList.name),
+                    Snackbar.LENGTH_LONG
+                ).setAction(getString(R.string.undo)) {
+                    archivedList.isActive = !archivedList.isActive
+                    viewModel.updateShopList(archivedList)
+                }.show()
+            }
+        }).attachToRecyclerView(binding.currentListsRecyclerView)
     }
 
     private fun addSwipeToDelete() {
@@ -82,6 +102,7 @@ class CurrentListsFragment : Fragment() {
             ): Boolean {
                 return false
             }
+
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val deletedList: ShopList =
                     listsAdapter.currentList[viewHolder.adapterPosition]
@@ -101,23 +122,10 @@ class CurrentListsFragment : Fragment() {
     }
 
     private fun addNewList() {
-        val input = EditText(requireContext())
-        input.hint = getString(R.string.name)
-        input.inputType = InputType.TYPE_CLASS_TEXT
-        input.setPadding(resources.getDimension(R.dimen.image_padding).toInt())
-
-        AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.provide_list_name))
-            .setView(input)
-            .setCancelable(false)
-            .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                if (input.text.isNotEmpty()) {
-                    viewModel.addShopList(
-                        ShopList(input.text.toString())
-                    )
-                }
+        ShopListDialog(object : OnItemClickListener {
+            override fun onItemClickListener(item: Any) {
+                viewModel.addShopList(item as ShopList)
             }
-            .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.cancel() }
-            .show()
+        }).show(requireFragmentManager(), getString(R.string.provide_item_dialog))
     }
 }

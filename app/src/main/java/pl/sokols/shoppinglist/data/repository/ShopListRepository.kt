@@ -10,9 +10,11 @@ import javax.inject.Singleton
 class ShopListRepository @Inject constructor(
     private val shopListDao: ShopListDao
 ) {
-    val allShopLists: Flow<List<ShopList>> = shopListDao.getAllShopLists()
+    fun getAllShopListsByActive(isActive: Boolean): Flow<List<ShopList>> = shopListDao.getAllShopListsByActive(isActive)
 
     suspend fun deleteShopList(shopList: ShopList) = shopListDao.deleteShopList(shopList)
 
     suspend fun insertShopList(shopList: ShopList) = shopListDao.insertShopList(shopList)
+
+    suspend fun updateShopListActive(id: Int, isActive: Boolean) = shopListDao.updateShopListActive(id, isActive)
 }

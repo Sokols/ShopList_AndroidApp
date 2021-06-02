@@ -17,4 +17,6 @@ class ShopItemRepository @Inject constructor(
     suspend fun deleteShopItem(shopItem: ShopItem) = shopItemDao.deleteShopItem(shopItem)
 
     suspend fun insertShopItem(shopItem: ShopItem) = shopItemDao.insertShopItem(shopItem)
+
+    suspend fun updateShopItemChecked(id: Int, isChecked: Boolean) = shopItemDao.updateShopItemChecked(id, isChecked)
 }
