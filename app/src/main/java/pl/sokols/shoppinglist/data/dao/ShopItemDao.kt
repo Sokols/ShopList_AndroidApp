@@ -7,7 +7,7 @@ import pl.sokols.shoppinglist.data.entities.ShopItem
 @Dao
 interface ShopItemDao {
 
-    @Query("SELECT * FROM shop_items WHERE shop_list_id=:shopListId ORDER BY is_checked")
+    @Query("SELECT * FROM shop_items WHERE shopListId=:shopListId ORDER BY is_checked")
     fun findShopItemsForList(shopListId: Int): Flow<List<ShopItem>>
 
     @Delete
@@ -16,6 +16,6 @@ interface ShopItemDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertShopItem(shopItem: ShopItem)
 
-    @Query("UPDATE shop_items SET is_checked=:isChecked WHERE shop_item_id=:id")
+    @Query("UPDATE shop_items SET is_checked=:isChecked WHERE id=:id")
     suspend fun updateShopItemChecked(id: Int, isChecked: Boolean)
 }

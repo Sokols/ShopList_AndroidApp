@@ -10,7 +10,7 @@
 
         <variable
             name="shopList"
-            type="pl.sokols.shoppinglist.data.entities.ShopList" />
+            type="pl.sokols.shoppinglist.data.entities.ShopListDetails" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/image_padding"
-            android:text="@{shopList.name}"
+            android:text="@{shopList.shopList.name}"
             android:textColor="?attr/colorPrimary"
             android:textSize="18sp"
             android:textStyle="bold"

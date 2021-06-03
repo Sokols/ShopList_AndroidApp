@@ -14,9 +14,10 @@ import pl.sokols.shoppinglist.R
 import pl.sokols.shoppinglist.data.entities.ShopItem
 import pl.sokols.shoppinglist.databinding.ListDetailsFragmentBinding
 import pl.sokols.shoppinglist.ui.adapters.DetailsAdapter
-import pl.sokols.shoppinglist.utils.DividerItemDecorator
+import pl.sokols.shoppinglist.ui.adapters.DividerItemDecorator
 import pl.sokols.shoppinglist.utils.OnItemClickListener
 import pl.sokols.shoppinglist.utils.ShopItemDialog
+import pl.sokols.shoppinglist.utils.SwipeHelper
 import pl.sokols.shoppinglist.utils.Utils
 
 @AndroidEntryPoint
@@ -100,14 +101,7 @@ class ListDetailsFragment : Fragment() {
     }
 
     private fun addSwipeToDelete() {
-        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-                return false
-            }
+        ItemTouchHelper(object : SwipeHelper(ItemTouchHelper.LEFT) {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val deletedItem: ShopItem =

@@ -9,7 +9,6 @@ import pl.sokols.shoppinglist.data.entities.ShopItem
 import pl.sokols.shoppinglist.databinding.ShopItemListitemBinding
 import pl.sokols.shoppinglist.ui.adapters.DetailsAdapter.DetailsViewHolder
 import pl.sokols.shoppinglist.utils.OnItemClickListener
-import pl.sokols.shoppinglist.utils.ShopItemDiffCallback
 
 class DetailsAdapter(
     private val listener: OnItemClickListener,

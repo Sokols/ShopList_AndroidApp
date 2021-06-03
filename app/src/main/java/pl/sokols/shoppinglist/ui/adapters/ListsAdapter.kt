@@ -7,27 +7,28 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.sokols.shoppinglist.R
-import pl.sokols.shoppinglist.data.entities.ShopItem
-import pl.sokols.shoppinglist.data.entities.ShopList
+import pl.sokols.shoppinglist.data.entities.ShopListDetails
 import pl.sokols.shoppinglist.databinding.ShopListListitemBinding
-import pl.sokols.shoppinglist.utils.ShopListDiffCallback
 import pl.sokols.shoppinglist.utils.Utils
 
-class ListsAdapter : ListAdapter<ShopList, ListsAdapter.ListsViewHolder>(ShopListDiffCallback) {
+class ListsAdapter :
+    ListAdapter<ShopListDetails, ListsAdapter.ListsViewHolder>(ShopListDiffCallback) {
 
     inner class ListsViewHolder(
         private val binding: ShopListListitemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(shopList: ShopList) {
+        fun bind(shopList: ShopListDetails) {
             binding.shopList = shopList
+
+            binding.doneAmount = "${Utils.getChecked(shopList.items)}/${shopList.items.size}"
 
             binding.shopListLayout.setOnClickListener {
                 val bundle = bundleOf(
-                    Utils.SHOP_LIST_ID_KEY to shopList.id,
-                    Utils.SHOP_LIST_IS_ACTIVE_KEY to shopList.isActive
+                    Utils.SHOP_LIST_ID_KEY to shopList.shopList.id,
+                    Utils.SHOP_LIST_IS_ACTIVE_KEY to shopList.shopList.isActive
                 )
-                if (shopList.isActive) {
+                if (shopList.shopList.isActive) {
                     it.findNavController()
                         .navigate(R.id.action_currentListsFragment_to_listDetailsFragment, bundle)
                 } else {

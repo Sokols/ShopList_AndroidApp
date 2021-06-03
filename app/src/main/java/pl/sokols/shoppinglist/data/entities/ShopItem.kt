@@ -11,21 +11,19 @@ import androidx.room.PrimaryKey
     foreignKeys = [ForeignKey(
         entity = ShopList::class,
         parentColumns = ["id"],
-        childColumns = ["shop_list_id"],
+        childColumns = ["shopListId"],
         onDelete = CASCADE
     )]
 )
 data class ShopItem(
     var name: String?,
     var amount: Int?,
-    @ColumnInfo(name = "shop_list_id")
     var shopListId: Int,
     @ColumnInfo(name = "is_checked")
     var isChecked: Boolean = false
 ) : Cloneable {
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "shop_item_id")
-    var shopItemId: Int = 0
+    var id: Int = 0
 
     /**
      * Method overridden to remove deep link List Adapter bug.

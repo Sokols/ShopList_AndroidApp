@@ -4,7 +4,6 @@ import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import pl.sokols.shoppinglist.data.entities.ShopItem
-import pl.sokols.shoppinglist.data.entities.ShopList
 import pl.sokols.shoppinglist.data.repository.ShopItemRepository
 import pl.sokols.shoppinglist.data.repository.ShopListRepository
 import pl.sokols.shoppinglist.utils.Utils
@@ -30,6 +29,6 @@ class ListDetailsViewModel @Inject constructor(
     }
 
     fun updateShopItem(shopItem: ShopItem) = viewModelScope.launch {
-        shopItemRepository.updateShopItemChecked(shopItem.shopItemId, shopItem.isChecked)
+        shopItemRepository.updateShopItemChecked(shopItem.id, shopItem.isChecked)
     }
 }

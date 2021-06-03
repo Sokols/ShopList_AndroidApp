@@ -1,7 +1,6 @@
 package pl.sokols.shoppinglist.utils
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,7 +37,7 @@ class ShopItemDialog(
 
     private fun setComponents() {
         dialogBinding.applyDialogButton.setOnClickListener {
-            if (shopItem.name!!.isEmpty()) {
+            if (shopItem.name!!.trim().isEmpty()) {
                 dialogBinding.itemNameTextInputLayout.error = getString(R.string.incorrect_value)
                 dialogBinding.itemNameTextInputLayout.isErrorEnabled = true
             } else {
@@ -50,7 +49,7 @@ class ShopItemDialog(
             } else {
                 dialogBinding.itemAmountTextInputLayout.isErrorEnabled = false
             }
-            if (shopItem.name != null && shopItem.amount != null && shopItem.name!!.isNotEmpty() && shopItem.amount != 0) {
+            if (shopItem.name != null && shopItem.amount != null && shopItem.name!!.trim().isNotEmpty() && shopItem.amount != 0) {
                 listener.onItemClickListener(shopItem)
                 dismiss()
             }

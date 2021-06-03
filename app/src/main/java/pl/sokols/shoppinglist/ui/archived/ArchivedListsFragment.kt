@@ -12,9 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.shoppinglist.R
 import pl.sokols.shoppinglist.data.entities.ShopList
+import pl.sokols.shoppinglist.data.entities.ShopListDetails
 import pl.sokols.shoppinglist.databinding.ArchivedListsFragmentBinding
 import pl.sokols.shoppinglist.ui.adapters.ListsAdapter
-import pl.sokols.shoppinglist.utils.DividerItemDecorator
+import pl.sokols.shoppinglist.ui.adapters.DividerItemDecorator
+import pl.sokols.shoppinglist.utils.SwipeHelper
 import pl.sokols.shoppinglist.utils.Utils
 
 @AndroidEntryPoint
@@ -60,17 +62,10 @@ class ArchivedListsFragment : Fragment() {
     }
 
     private fun addSwipeToUnarchive() {
-        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-                return false
-            }
+        ItemTouchHelper(object : SwipeHelper(ItemTouchHelper.RIGHT) {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val archivedList: ShopList = listsAdapter.currentList[viewHolder.adapterPosition]
+                val archivedList: ShopList = listsAdapter.currentList[viewHolder.adapterPosition].shopList
                 archivedList.isActive = !archivedList.isActive
                 viewModel.updateShopList(archivedList)
 
@@ -86,21 +81,11 @@ class ArchivedListsFragment : Fragment() {
         }).attachToRecyclerView(binding.archivedListsRecyclerView)
     }
 
-
     private fun addSwipeToDelete() {
-        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-                return false
-            }
-
+        ItemTouchHelper(object : SwipeHelper(ItemTouchHelper.LEFT) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val deletedList: ShopList =
-                    listsAdapter.currentList[viewHolder.adapterPosition]
-
+                    listsAdapter.currentList[viewHolder.adapterPosition].shopList
                 viewModel.deleteShopList(deletedList)
 
                 Utils.getSnackbar(

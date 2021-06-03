@@ -1,4 +1,4 @@
-package pl.sokols.shoppinglist.utils
+package pl.sokols.shoppinglist.ui.adapters
 
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable

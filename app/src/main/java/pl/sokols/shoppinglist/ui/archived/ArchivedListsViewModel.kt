@@ -7,17 +7,17 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import pl.sokols.shoppinglist.data.entities.ShopList
-import pl.sokols.shoppinglist.data.repository.ShopItemRepository
+import pl.sokols.shoppinglist.data.entities.ShopListDetails
 import pl.sokols.shoppinglist.data.repository.ShopListRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class ArchivedListsViewModel @Inject constructor(
-    private val shopListRepository: ShopListRepository,
-    private val shopItemRepository: ShopItemRepository
-): ViewModel() {
+    private val shopListRepository: ShopListRepository
+) : ViewModel() {
 
-    val items: LiveData<List<ShopList>> = shopListRepository.getAllShopListsByActive(false).asLiveData()
+    val items: LiveData<List<ShopListDetails>> =
+        shopListRepository.getAllShopListsByActive(false).asLiveData()
 
     fun deleteShopList(deletedList: ShopList) = viewModelScope.launch {
         shopListRepository.deleteShopList(deletedList)
