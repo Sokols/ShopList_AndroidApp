@@ -13,7 +13,7 @@ data class ShopList(
     @ColumnInfo(name = "is_active")
     var isActive: Boolean = true,
     @Ignore
-    var items: List<ShopItem>? = null
+    var items: List<ShopItem> = listOf()
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0

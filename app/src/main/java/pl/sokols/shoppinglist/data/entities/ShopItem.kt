@@ -16,8 +16,8 @@ import androidx.room.PrimaryKey
     )]
 )
 data class ShopItem(
-    var name: String?,
-    var amount: Int?,
+    var name: String,
+    var amount: Int,
     var shopListId: Int,
     @ColumnInfo(name = "is_checked")
     var isChecked: Boolean = false

@@ -11,5 +11,5 @@ data class ShopListDetails(
         entityColumn = "shopListId",
         entity = ShopItem::class
     )
-    val items: List<ShopItem>
+    val items: List<ShopItem> = listOf()
 )
