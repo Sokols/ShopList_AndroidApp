@@ -77,7 +77,7 @@ class ShopListDaoTest {
         dao.insertShopList(shopList)
         val addedList = dao.getAllShopListsByActive(true).asLiveData().getOrAwaitValue()[0]
         addedList.shopList.isActive = !addedList.shopList.isActive
-        dao.updateShopListActive(addedList.shopList.id, addedList.shopList.isActive)
+        dao.updateShopList(addedList.shopList)
         val allShopItems = dao.getAllShopListsByActive(false).asLiveData().getOrAwaitValue()
         assertThat(allShopItems).contains(addedList)
     }

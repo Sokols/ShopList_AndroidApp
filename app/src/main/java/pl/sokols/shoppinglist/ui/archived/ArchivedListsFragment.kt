@@ -31,7 +31,7 @@ class ArchivedListsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = ArchivedListsFragmentBinding.inflate(inflater, container, false)
-        listsAdapter = ListsAdapter()
+        listsAdapter = ListsAdapter(null)
         setComponents()
         setObservers()
         return binding.root
@@ -92,9 +92,7 @@ class ArchivedListsFragment : Fragment() {
                     requireView(),
                     String.format(getString(R.string.deleted), deletedList.name),
                     requireActivity()
-                ).setAction(getString(R.string.undo)) {
-                    viewModel.addShopList(deletedList)
-                }.show()
+                ).show()
             }
         }).attachToRecyclerView(binding.archivedListsRecyclerView)
     }

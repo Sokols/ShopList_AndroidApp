@@ -21,20 +21,7 @@ data class ShopItem(
     var shopListId: Int,
     @ColumnInfo(name = "is_checked")
     var isChecked: Boolean = false
-) : Cloneable {
+) {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
-
-    /**
-     * Method overridden to remove deep link List Adapter bug.
-     */
-    public override fun clone(): ShopItem {
-        val clone: ShopItem
-        try {
-            clone = super.clone() as ShopItem
-        } catch (e: CloneNotSupportedException) {
-            throw RuntimeException(e)
-        }
-        return clone
-    }
 }

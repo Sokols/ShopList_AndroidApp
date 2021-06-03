@@ -21,9 +21,9 @@ public class ShopListDialog extends DialogFragment {
     private final ShopList shopList;
     private ShopListDialogBinding dialogBinding;
 
-    public ShopListDialog(OnItemClickListener listener) {
+    public ShopListDialog(ShopList shopList, OnItemClickListener listener) {
         this.listener = listener;
-        this.shopList = new ShopList("");
+        this.shopList = shopList == null ? new ShopList("") : shopList;
     }
 
     @Override
@@ -44,7 +44,8 @@ public class ShopListDialog extends DialogFragment {
 
     private void setComponents() {
         dialogBinding.applyListDialogButton.setOnClickListener(v -> {
-            if (dialogBinding.listNameEditText.getText().toString().trim().isEmpty()) {
+            if (dialogBinding.listNameEditText.getText() != null
+                    && dialogBinding.listNameEditText.getText().toString().trim().isEmpty()) {
                 dialogBinding.listNameTextInputLayout.setError(getString(R.string.incorrect_value));
                 dialogBinding.listNameTextInputLayout.setErrorEnabled(true);
             } else {

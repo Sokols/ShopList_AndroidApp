@@ -14,12 +14,9 @@ import pl.sokols.shoppinglist.R
 import pl.sokols.shoppinglist.data.entities.ShopList
 import pl.sokols.shoppinglist.data.entities.ShopListDetails
 import pl.sokols.shoppinglist.databinding.CurrentListsFragmentBinding
-import pl.sokols.shoppinglist.ui.adapters.ListsAdapter
 import pl.sokols.shoppinglist.ui.adapters.DividerItemDecorator
-import pl.sokols.shoppinglist.utils.OnItemClickListener
-import pl.sokols.shoppinglist.utils.ShopListDialog
-import pl.sokols.shoppinglist.utils.SwipeHelper
-import pl.sokols.shoppinglist.utils.Utils
+import pl.sokols.shoppinglist.ui.adapters.ListsAdapter
+import pl.sokols.shoppinglist.utils.*
 
 
 @AndroidEntryPoint
@@ -34,7 +31,7 @@ class CurrentListsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = CurrentListsFragmentBinding.inflate(inflater, container, false)
-        listsAdapter = ListsAdapter()
+        listsAdapter = ListsAdapter(longClickListener)
         setObservers()
         setComponents()
         return binding.root
@@ -56,7 +53,11 @@ class CurrentListsFragment : Fragment() {
         addSwipeToDelete()
 
         binding.addListFAB.setOnClickListener {
-            addNewList()
+            addNewList(null , object : OnItemClickListener {
+                override fun onItemClickListener(item: Any) {
+                    viewModel.addShopList(item as ShopList)
+                }
+            })
         }
     }
 
@@ -71,7 +72,8 @@ class CurrentListsFragment : Fragment() {
     private fun addSwipeToArchive() {
         ItemTouchHelper(object : SwipeHelper(ItemTouchHelper.RIGHT) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val archivedList: ShopList = listsAdapter.currentList[viewHolder.adapterPosition].shopList
+                val archivedList: ShopList =
+                    listsAdapter.currentList[viewHolder.adapterPosition].shopList
                 archivedList.isActive = !archivedList.isActive
                 viewModel.updateShopList(archivedList)
 
@@ -92,25 +94,33 @@ class CurrentListsFragment : Fragment() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val deletedList: ShopList =
                     listsAdapter.currentList[viewHolder.adapterPosition].shopList
-
                 viewModel.deleteShopList(deletedList)
 
                 Utils.getSnackbar(
                     requireView(),
                     String.format(getString(R.string.deleted), deletedList.name),
                     requireActivity()
-                ).setAction(getString(R.string.undo)) {
-                    viewModel.addShopList(deletedList)
-                }.show()
+                ).show()
             }
         }).attachToRecyclerView(binding.currentListsRecyclerView)
     }
 
-    private fun addNewList() {
-        ShopListDialog(object : OnItemClickListener {
-            override fun onItemClickListener(item: Any) {
-                viewModel.addShopList(item as ShopList)
-            }
-        }).show(requireFragmentManager(), getString(R.string.provide_item_dialog))
+    private fun addNewList(shopList: ShopList?, listener: OnItemClickListener) {
+        ShopListDialog(shopList, listener).show(
+            requireFragmentManager(),
+            getString(R.string.provide_item_dialog)
+        )
+    }
+
+    private val longClickListener = object : OnLongClickListener {
+        override fun onLongClickListener(item: Any) {
+            val shopListDetails = item as ShopListDetails
+            addNewList(shopListDetails.shopList, object : OnItemClickListener {
+                override fun onItemClickListener(item: Any) {
+                    viewModel.updateShopList(item as ShopList)
+                    listsAdapter.notifyDataSetChanged()
+                }
+            })
+        }
     }
 }

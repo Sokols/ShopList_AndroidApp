@@ -18,6 +18,6 @@ interface ShopListDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertShopList(shopList: ShopList)
 
-    @Query("UPDATE shop_lists SET is_active=:isActive WHERE id=:id")
-    suspend fun updateShopListActive(id: Int, isActive: Boolean)
+    @Update
+    suspend fun updateShopList(shopList: ShopList)
 }

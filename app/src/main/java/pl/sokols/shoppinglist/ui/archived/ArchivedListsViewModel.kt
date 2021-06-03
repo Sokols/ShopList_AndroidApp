@@ -24,7 +24,7 @@ class ArchivedListsViewModel @Inject constructor(
     }
 
     fun updateShopList(shopList: ShopList) = viewModelScope.launch {
-        shopListRepository.updateShopListActive(shopList.id, shopList.isActive)
+        shopListRepository.updateShopList(shopList)
     }
 
     fun addShopList(shopList: ShopList) = viewModelScope.launch {

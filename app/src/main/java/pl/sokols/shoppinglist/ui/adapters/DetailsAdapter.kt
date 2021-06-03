@@ -9,9 +9,11 @@ import pl.sokols.shoppinglist.data.entities.ShopItem
 import pl.sokols.shoppinglist.databinding.ShopItemListitemBinding
 import pl.sokols.shoppinglist.ui.adapters.DetailsAdapter.DetailsViewHolder
 import pl.sokols.shoppinglist.utils.OnItemClickListener
+import pl.sokols.shoppinglist.utils.OnLongClickListener
 
 class DetailsAdapter(
     private val listener: OnItemClickListener,
+    private val longClickListener: OnLongClickListener,
     private val isActive: Boolean
 ) : ListAdapter<ShopItem, DetailsViewHolder>(ShopItemDiffCallback) {
 
@@ -19,7 +21,12 @@ class DetailsAdapter(
         private val binding: ShopItemListitemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(shopItem: ShopItem, listener: OnItemClickListener, isActive: Boolean) {
+        fun bind(
+            shopItem: ShopItem,
+            listener: OnItemClickListener,
+            longClickListener: OnLongClickListener,
+            isActive: Boolean
+        ) {
             if (shopItem.isChecked) {
                 binding.shopItemCheckImageView.setImageResource(R.drawable.ic_baseline_check_circle_24)
             } else {
@@ -31,6 +38,11 @@ class DetailsAdapter(
             if (isActive) {
                 binding.shopItemLayout.setOnClickListener {
                     listener.onItemClickListener(shopItem)
+                }
+
+                binding.shopItemLayout.setOnLongClickListener {
+                    longClickListener.onLongClickListener(shopItem)
+                    true
                 }
             }
         }
@@ -47,6 +59,6 @@ class DetailsAdapter(
     }
 
     override fun onBindViewHolder(holder: DetailsViewHolder, position: Int) {
-        holder.bind(getItem(position), listener, isActive)
+        holder.bind(getItem(position), listener, longClickListener, isActive)
     }
 }

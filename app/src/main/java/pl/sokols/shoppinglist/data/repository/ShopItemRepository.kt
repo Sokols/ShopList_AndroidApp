@@ -11,12 +11,12 @@ class ShopItemRepository @Inject constructor(
     private val shopItemDao: ShopItemDao
 ) {
 
-    fun getAllShopItems(shopItemId: Int): Flow<List<ShopItem>> =
-        shopItemDao.findShopItemsForList(shopItemId)
+    fun getAllShopItems(shopListId: Int): Flow<List<ShopItem>> =
+        shopItemDao.findShopItemsForList(shopListId)
 
     suspend fun deleteShopItem(shopItem: ShopItem) = shopItemDao.deleteShopItem(shopItem)
 
     suspend fun insertShopItem(shopItem: ShopItem) = shopItemDao.insertShopItem(shopItem)
 
-    suspend fun updateShopItemChecked(id: Int, isChecked: Boolean) = shopItemDao.updateShopItemChecked(id, isChecked)
+    suspend fun updateShopItemChecked(shopItem: ShopItem) = shopItemDao.updateShopItemChecked(shopItem)
 }

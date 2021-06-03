@@ -17,5 +17,5 @@ class ShopListRepository @Inject constructor(
 
     suspend fun insertShopList(shopList: ShopList) = shopListDao.insertShopList(shopList)
 
-    suspend fun updateShopListActive(id: Int, isActive: Boolean) = shopListDao.updateShopListActive(id, isActive)
+    suspend fun updateShopList(shopList: ShopList) = shopListDao.updateShopList(shopList)
 }

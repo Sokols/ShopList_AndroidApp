@@ -12,8 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ListDetailsViewModel @Inject constructor(
     private val shopItemRepository: ShopItemRepository,
-    private val shopListRepository: ShopListRepository,
-    private val savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ): ViewModel(), LifecycleObserver {
 
     private var shopListId: Int = savedStateHandle.get<Int>(Utils.SHOP_LIST_ID_KEY)!!
@@ -29,6 +28,6 @@ class ListDetailsViewModel @Inject constructor(
     }
 
     fun updateShopItem(shopItem: ShopItem) = viewModelScope.launch {
-        shopItemRepository.updateShopItemChecked(shopItem.id, shopItem.isChecked)
+        shopItemRepository.updateShopItemChecked(shopItem)
     }
 }

@@ -9,16 +9,19 @@ import androidx.recyclerview.widget.RecyclerView
 import pl.sokols.shoppinglist.R
 import pl.sokols.shoppinglist.data.entities.ShopListDetails
 import pl.sokols.shoppinglist.databinding.ShopListListitemBinding
+import pl.sokols.shoppinglist.utils.OnLongClickListener
 import pl.sokols.shoppinglist.utils.Utils
 
-class ListsAdapter :
+class ListsAdapter(
+    private val longClickListener: OnLongClickListener?
+) :
     ListAdapter<ShopListDetails, ListsAdapter.ListsViewHolder>(ShopListDiffCallback) {
 
     inner class ListsViewHolder(
         private val binding: ShopListListitemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(shopList: ShopListDetails) {
+        fun bind(shopList: ShopListDetails, longClickListener: OnLongClickListener?) {
             binding.shopList = shopList
 
             binding.doneAmount = "${Utils.getChecked(shopList.items)}/${shopList.items.size}"
@@ -36,6 +39,13 @@ class ListsAdapter :
                         .navigate(R.id.action_archivedListsFragment_to_listDetailsFragment, bundle)
                 }
             }
+
+            if (longClickListener != null) {
+                binding.shopListLayout.setOnLongClickListener {
+                    longClickListener.onLongClickListener(shopList)
+                    true
+                }
+            }
         }
     }
 
@@ -50,6 +60,6 @@ class ListsAdapter :
     }
 
     override fun onBindViewHolder(holder: ListsViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), longClickListener)
     }
 }

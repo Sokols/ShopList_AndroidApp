@@ -16,7 +16,8 @@ class CurrentListsViewModel @Inject constructor(
     private val shopListRepository: ShopListRepository
 ) : ViewModel() {
 
-    val items: LiveData<List<ShopListDetails>> = shopListRepository.getAllShopListsByActive(true).asLiveData()
+    val items: LiveData<List<ShopListDetails>> =
+        shopListRepository.getAllShopListsByActive(true).asLiveData()
 
     fun addShopList(shopList: ShopList) = viewModelScope.launch {
         shopListRepository.insertShopList(shopList)
@@ -27,6 +28,6 @@ class CurrentListsViewModel @Inject constructor(
     }
 
     fun updateShopList(shopList: ShopList) = viewModelScope.launch {
-        shopListRepository.updateShopListActive(shopList.id, shopList.isActive)
+        shopListRepository.updateShopList(shopList)
     }
 }

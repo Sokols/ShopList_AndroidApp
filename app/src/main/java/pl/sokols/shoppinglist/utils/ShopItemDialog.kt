@@ -9,13 +9,14 @@ import pl.sokols.shoppinglist.R
 import pl.sokols.shoppinglist.data.entities.ShopItem
 import pl.sokols.shoppinglist.databinding.ShopItemDialogBinding
 
-
 class ShopItemDialog(
-    private val shopListId: Int,
+    sentShopItem: ShopItem?,
+    shopListId: Int,
     private val listener: OnItemClickListener
 ) : DialogFragment() {
 
-    var shopItem: ShopItem = ShopItem(name = "", shopListId = shopListId, amount = 0)
+    var shopItem: ShopItem =
+        sentShopItem ?: ShopItem(name = "", shopListId = shopListId, amount = 1)
 
     private lateinit var dialogBinding: ShopItemDialogBinding
 
@@ -37,7 +38,7 @@ class ShopItemDialog(
 
     private fun setComponents() {
         dialogBinding.applyDialogButton.setOnClickListener {
-            if (shopItem.name!!.trim().isEmpty()) {
+            if (shopItem.name.trim().isEmpty()) {
                 dialogBinding.itemNameTextInputLayout.error = getString(R.string.incorrect_value)
                 dialogBinding.itemNameTextInputLayout.isErrorEnabled = true
             } else {
@@ -49,7 +50,7 @@ class ShopItemDialog(
             } else {
                 dialogBinding.itemAmountTextInputLayout.isErrorEnabled = false
             }
-            if (shopItem.name != null && shopItem.amount != null && shopItem.name!!.trim().isNotEmpty() && shopItem.amount != 0) {
+            if (shopItem.name.trim().isNotEmpty() && shopItem.amount != 0) {
                 listener.onItemClickListener(shopItem)
                 dismiss()
             }
