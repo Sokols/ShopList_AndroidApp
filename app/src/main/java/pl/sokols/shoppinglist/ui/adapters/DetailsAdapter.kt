@@ -1,26 +1,26 @@
-package pl.sokols.shoppinglist.ui.details.adapters
+package pl.sokols.shoppinglist.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.sokols.shoppinglist.R
 import pl.sokols.shoppinglist.data.entities.ShopItem
 import pl.sokols.shoppinglist.databinding.ShopItemListitemBinding
-import pl.sokols.shoppinglist.ui.details.adapters.DetailsAdapter.DetailsViewHolder
+import pl.sokols.shoppinglist.ui.adapters.DetailsAdapter.DetailsViewHolder
 import pl.sokols.shoppinglist.utils.OnItemClickListener
 import pl.sokols.shoppinglist.utils.ShopItemDiffCallback
 
 class DetailsAdapter(
-    private val onItemClickListener: OnItemClickListener
+    private val listener: OnItemClickListener,
+    private val isActive: Boolean
 ) : ListAdapter<ShopItem, DetailsViewHolder>(ShopItemDiffCallback) {
 
     inner class DetailsViewHolder(
         private val binding: ShopItemListitemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(shopItem: ShopItem, onItemClickListener: OnItemClickListener) {
+        fun bind(shopItem: ShopItem, listener: OnItemClickListener, isActive: Boolean) {
             if (shopItem.isChecked) {
                 binding.shopItemCheckImageView.setImageResource(R.drawable.ic_baseline_check_circle_24)
             } else {
@@ -29,8 +29,10 @@ class DetailsAdapter(
 
             binding.shopItem = shopItem
 
-            binding.shopItemCheckImageView.setOnClickListener {
-                onItemClickListener.onItemClickListener(shopItem)
+            if (isActive) {
+                binding.shopItemLayout.setOnClickListener {
+                    listener.onItemClickListener(shopItem)
+                }
             }
         }
     }
@@ -46,6 +48,6 @@ class DetailsAdapter(
     }
 
     override fun onBindViewHolder(holder: DetailsViewHolder, position: Int) {
-        holder.bind(getItem(position), onItemClickListener)
+        holder.bind(getItem(position), listener, isActive)
     }
 }

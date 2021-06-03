@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/currentLists"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_list_24"
+        android:contentDescription="@string/shopping_lists"
+        android:title="@string/shopping_lists"/>
+    <item
+        android:id="@+id/archivedLists"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_archive_24"
+        android:contentDescription="@string/archived_lists"
+        android:title="@string/archived_lists"/>
+</menu>

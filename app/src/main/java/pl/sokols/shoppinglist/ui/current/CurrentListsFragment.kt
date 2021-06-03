@@ -9,15 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.shoppinglist.R
 import pl.sokols.shoppinglist.data.entities.ShopList
 import pl.sokols.shoppinglist.databinding.CurrentListsFragmentBinding
-import pl.sokols.shoppinglist.ui.current.adapters.ListsAdapter
+import pl.sokols.shoppinglist.ui.adapters.ListsAdapter
 import pl.sokols.shoppinglist.utils.DividerItemDecorator
 import pl.sokols.shoppinglist.utils.OnItemClickListener
 import pl.sokols.shoppinglist.utils.ShopListDialog
+import pl.sokols.shoppinglist.utils.Utils
 
 
 @AndroidEntryPoint
@@ -33,8 +33,8 @@ class CurrentListsFragment : Fragment() {
     ): View {
         binding = CurrentListsFragmentBinding.inflate(inflater, container, false)
         listsAdapter = ListsAdapter()
-        setComponents()
         setObservers()
+        setComponents()
         return binding.root
     }
 
@@ -81,10 +81,10 @@ class CurrentListsFragment : Fragment() {
                 archivedList.isActive = !archivedList.isActive
                 viewModel.updateShopList(archivedList)
 
-                Snackbar.make(
+                Utils.getSnackbar(
                     requireView(),
                     String.format(getString(R.string.archived), archivedList.name),
-                    Snackbar.LENGTH_LONG
+                    requireActivity()
                 ).setAction(getString(R.string.undo)) {
                     archivedList.isActive = !archivedList.isActive
                     viewModel.updateShopList(archivedList)
@@ -109,14 +109,13 @@ class CurrentListsFragment : Fragment() {
 
                 viewModel.deleteShopList(deletedList)
 
-                Snackbar.make(
+                Utils.getSnackbar(
                     requireView(),
                     String.format(getString(R.string.deleted), deletedList.name),
-                    Snackbar.LENGTH_LONG
-                )
-                    .setAction(getString(R.string.undo)) {
-                        viewModel.addShopList(deletedList)
-                    }.show()
+                    requireActivity()
+                ).setAction(getString(R.string.undo)) {
+                    viewModel.addShopList(deletedList)
+                }.show()
             }
         }).attachToRecyclerView(binding.currentListsRecyclerView)
     }

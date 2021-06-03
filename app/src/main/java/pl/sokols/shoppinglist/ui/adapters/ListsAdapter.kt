@@ -1,4 +1,4 @@
-package pl.sokols.shoppinglist.ui.current.adapters
+package pl.sokols.shoppinglist.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,9 +7,9 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.sokols.shoppinglist.R
+import pl.sokols.shoppinglist.data.entities.ShopItem
 import pl.sokols.shoppinglist.data.entities.ShopList
 import pl.sokols.shoppinglist.databinding.ShopListListitemBinding
-import pl.sokols.shoppinglist.utils.OnItemClickListener
 import pl.sokols.shoppinglist.utils.ShopListDiffCallback
 import pl.sokols.shoppinglist.utils.Utils
 
@@ -23,9 +23,17 @@ class ListsAdapter : ListAdapter<ShopList, ListsAdapter.ListsViewHolder>(ShopLis
             binding.shopList = shopList
 
             binding.shopListLayout.setOnClickListener {
-                val bundle = bundleOf(Utils.SHOP_LIST_ID_KEY to shopList.id)
-                it.findNavController()
-                    .navigate(R.id.action_currentListsFragment_to_listDetailsFragment, bundle)
+                val bundle = bundleOf(
+                    Utils.SHOP_LIST_ID_KEY to shopList.id,
+                    Utils.SHOP_LIST_IS_ACTIVE_KEY to shopList.isActive
+                )
+                if (shopList.isActive) {
+                    it.findNavController()
+                        .navigate(R.id.action_currentListsFragment_to_listDetailsFragment, bundle)
+                } else {
+                    it.findNavController()
+                        .navigate(R.id.action_archivedListsFragment_to_listDetailsFragment, bundle)
+                }
             }
         }
     }

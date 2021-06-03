@@ -13,8 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CurrentListsViewModel @Inject constructor(
-    private val shopItemRepository: ShopItemRepository,
-    private val shopListRepository: ShopListRepository
+    private val shopListRepository: ShopListRepository,
+    private val shopItemRepository: ShopItemRepository
 ) : ViewModel() {
 
     val items: LiveData<List<ShopList>> = shopListRepository.getAllShopListsByActive(true).asLiveData()

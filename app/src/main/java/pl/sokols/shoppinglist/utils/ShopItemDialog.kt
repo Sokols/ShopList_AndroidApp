@@ -38,7 +38,6 @@ class ShopItemDialog(
 
     private fun setComponents() {
         dialogBinding.applyDialogButton.setOnClickListener {
-            println(shopItem)
             if (shopItem.name!!.isEmpty()) {
                 dialogBinding.itemNameTextInputLayout.error = getString(R.string.incorrect_value)
                 dialogBinding.itemNameTextInputLayout.isErrorEnabled = true

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="doneAmount"
             type="String" />
@@ -15,7 +16,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/shopListLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple">
 
         <ImageView
             android:id="@+id/shopListImageView"

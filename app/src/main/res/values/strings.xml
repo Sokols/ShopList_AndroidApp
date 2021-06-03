@@ -20,4 +20,8 @@
     <string name="archived">Archived: %s</string>
     <string name="checked">Checked!</string>
     <string name="unchecked">Unchecked!</string>
+    <string name="shopping_lists">Shopping Lists</string>
+    <string name="archived_lists">Archived Shopping Lists</string>
+    <string name="dearchived">De-archived: %s</string>
+    <string name="list_details">Shopping List Details</string>
 </resources>

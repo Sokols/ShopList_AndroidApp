@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <style name="BottomNavigationStyle" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="android:background">?attr/colorPrimaryVariant</item>
+        <item name="itemBackground">?attr/colorPrimaryVariant</item>
+        <item name="itemIconTint">?attr/colorOnPrimary</item>
+        <item name="itemTextColor">?attr/colorOnPrimary</item>
+    </style>
+
     <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="boxStrokeColor">?attr/colorPrimaryVariant</item>
         <item name="boxStrokeWidth">2dp</item>

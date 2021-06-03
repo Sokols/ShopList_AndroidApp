@@ -9,12 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.shoppinglist.R
 import pl.sokols.shoppinglist.data.entities.ShopItem
 import pl.sokols.shoppinglist.databinding.ListDetailsFragmentBinding
-import pl.sokols.shoppinglist.ui.details.adapters.DetailsAdapter
+import pl.sokols.shoppinglist.ui.adapters.DetailsAdapter
 import pl.sokols.shoppinglist.utils.DividerItemDecorator
 import pl.sokols.shoppinglist.utils.OnItemClickListener
 import pl.sokols.shoppinglist.utils.ShopItemDialog
@@ -27,14 +26,16 @@ class ListDetailsFragment : Fragment() {
     private lateinit var binding: ListDetailsFragmentBinding
     private val viewModel: ListDetailsViewModel by viewModels()
     private var shopListId: Int? = null
+    private var shopListIsActive: Boolean? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         shopListId = arguments?.getInt(Utils.SHOP_LIST_ID_KEY)
+        shopListIsActive = arguments?.getBoolean(Utils.SHOP_LIST_IS_ACTIVE_KEY)
         binding = ListDetailsFragmentBinding.inflate(inflater, container, false)
-        detailsAdapter = DetailsAdapter(onItemClickListener)
+        detailsAdapter = DetailsAdapter(onCheckClickListener, shopListIsActive!!)
         setComponents()
         setObservers()
         return binding.root
@@ -52,19 +53,14 @@ class ListDetailsFragment : Fragment() {
             )
         )
 
-        addSwipeToDelete()
-
-        binding.addItemFAB.setOnClickListener {
-            addNewShopItem()
-        }
-    }
-
-    private fun addNewShopItem() {
-        ShopItemDialog(shopListId!!, object : OnItemClickListener {
-            override fun onItemClickListener(item: Any) {
-                viewModel.addShopItem(item as ShopItem)
+        if (shopListIsActive == true) {
+            addSwipeToDelete()
+            binding.addItemFAB.setOnClickListener {
+                addNewShopItem()
             }
-        }).show(requireFragmentManager(), getString(R.string.provide_item_dialog))
+        } else {
+            binding.addItemFAB.visibility = View.GONE
+        }
     }
 
     private fun setObservers() {
@@ -77,19 +73,28 @@ class ListDetailsFragment : Fragment() {
         })
     }
 
-    private val onItemClickListener = object : OnItemClickListener {
+    private fun addNewShopItem() {
+        ShopItemDialog(shopListId!!, object : OnItemClickListener {
+            override fun onItemClickListener(item: Any) {
+                viewModel.addShopItem(item as ShopItem)
+            }
+        }).show(requireFragmentManager(), getString(R.string.provide_item_dialog))
+    }
+
+    private val onCheckClickListener = object : OnItemClickListener {
         override fun onItemClickListener(item: Any) {
             val shopItem = item as ShopItem
             shopItem.isChecked = !shopItem.isChecked
             viewModel.updateShopItem(shopItem)
-            Snackbar.make(
+
+            Utils.getSnackbar(
                 requireView(),
                 if (shopItem.isChecked) {
                     getString(R.string.checked)
                 } else {
                     getString(R.string.unchecked)
                 },
-                Snackbar.LENGTH_LONG
+                requireActivity()
             ).show()
         }
     }
@@ -110,10 +115,11 @@ class ListDetailsFragment : Fragment() {
 
                 viewModel.deleteShopItem(deletedItem)
 
-                Snackbar.make(
+
+                Utils.getSnackbar(
                     requireView(),
                     String.format(getString(R.string.deleted), deletedItem.name),
-                    Snackbar.LENGTH_LONG
+                    requireActivity()
                 )
                     .setAction(getString(R.string.undo)) {
                         viewModel.addShopItem(deletedItem)

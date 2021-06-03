@@ -3,15 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/navigation"
-    app:startDestination="@id/currentListsFragment">
+    app:startDestination="@id/currentLists">
 
     <fragment
-        android:id="@+id/currentListsFragment"
+        android:id="@+id/currentLists"
         android:name="pl.sokols.shoppinglist.ui.current.CurrentListsFragment"
-        android:label="CurrentListsFragment" >
+        android:label="@string/shopping_lists" >
         <action
             android:id="@+id/action_currentListsFragment_to_listDetailsFragment"
-            app:destination="@id/listDetailsFragment"
+            app:destination="@id/listDetails"
             app:enterAnim="@anim/slide_in"
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
@@ -19,11 +19,28 @@
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
-        android:id="@+id/listDetailsFragment"
+        android:id="@+id/listDetails"
         android:name="pl.sokols.shoppinglist.ui.details.ListDetailsFragment"
-        android:label="ListDetailsFragment" >
+        android:label="@string/list_details" >
         <argument
             android:name="@string/list_id"
             app:argType="integer" />
+        <argument
+            android:name="isActive"
+            app:argType="boolean"
+            android:defaultValue="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/archivedLists"
+        android:name="pl.sokols.shoppinglist.ui.archived.ArchivedListsFragment"
+        android:label="@string/archived_lists" >
+        <action
+            android:id="@+id/action_archivedListsFragment_to_listDetailsFragment"
+            app:destination="@id/listDetails"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>
