@@ -10,6 +10,9 @@ import pl.sokols.shoppinglist.data.dao.ShopListDao
 import pl.sokols.shoppinglist.data.entities.ShopItem
 import pl.sokols.shoppinglist.data.entities.ShopList
 
+/**
+ * Main database of the app.
+ */
 @Database(entities = [ShopItem::class, ShopList::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {

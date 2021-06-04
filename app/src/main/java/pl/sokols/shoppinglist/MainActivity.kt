@@ -10,6 +10,9 @@ import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.shoppinglist.databinding.MainActivityBinding
 
+/**
+ * Main container for fragments.
+ */
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
@@ -31,6 +34,9 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    /**
+     * Method which manages the whole navigation in the app (bottomNav + topBarNav).
+     */
     private fun setNavigation() {
         val appBarConfiguration = AppBarConfiguration(setOf(R.id.currentLists, R.id.archivedLists))
         val navController = Navigation.findNavController(this, R.id.navHostContainer)

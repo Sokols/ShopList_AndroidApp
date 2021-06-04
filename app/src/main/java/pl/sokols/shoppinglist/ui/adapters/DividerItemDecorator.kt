@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * Author: Bhuvanesh BS (https://stackoverflow.com/a/46216274/15382251)
  *
- * Class created to manage separators in a recyclerview.
+ * Class created to manage separators in recyclerviews.
  */
 class DividerItemDecorator(
     private val mDivider: Drawable

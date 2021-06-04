@@ -11,6 +11,9 @@ import pl.sokols.shoppinglist.data.dao.ShopListDao
 import pl.sokols.shoppinglist.data.database.AppDatabase
 import javax.inject.Singleton
 
+/**
+ * Dependency Injection module created for local database management.
+ */
 @InstallIn(SingletonComponent::class)
 @Module
 class DatabaseModule {

@@ -15,6 +15,9 @@ import pl.sokols.shoppinglist.R;
 import pl.sokols.shoppinglist.data.entities.ShopList;
 import pl.sokols.shoppinglist.databinding.ShopListDialogBinding;
 
+/**
+ * Helper class created to prepare dialog for ShopLists.
+ */
 public class ShopListDialog extends DialogFragment {
 
     private final OnItemClickListener listener;
@@ -42,6 +45,12 @@ public class ShopListDialog extends DialogFragment {
         return dialogBinding.getRoot();
     }
 
+    /**
+     * Method which:
+     * - validates the input,
+     * - displays the errors if the input is incorrect,
+     * - turns on the listener if the input is correct.
+     */
     private void setComponents() {
         dialogBinding.applyListDialogButton.setOnClickListener(v -> {
             if (dialogBinding.listNameEditText.getText() != null

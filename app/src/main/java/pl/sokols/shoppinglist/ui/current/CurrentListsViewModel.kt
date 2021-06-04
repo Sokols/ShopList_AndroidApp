@@ -11,6 +11,9 @@ import pl.sokols.shoppinglist.data.entities.ShopListDetails
 import pl.sokols.shoppinglist.data.repository.ShopListRepository
 import javax.inject.Inject
 
+/**
+ * ViewModel for the CurrentLists fragment.
+ */
 @HiltViewModel
 class CurrentListsViewModel @Inject constructor(
     private val shopListRepository: ShopListRepository

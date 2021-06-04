@@ -9,6 +9,9 @@ import pl.sokols.shoppinglist.R
 import pl.sokols.shoppinglist.data.entities.ShopItem
 import pl.sokols.shoppinglist.databinding.ShopItemDialogBinding
 
+/**
+ * Helper class created to prepare dialog for ShopItems.
+ */
 class ShopItemDialog(
     sentShopItem: ShopItem?,
     shopListId: Int,
@@ -36,6 +39,12 @@ class ShopItemDialog(
         return dialogBinding.root
     }
 
+    /**
+     * Method which:
+     * - validates the inputs,
+     * - displays the errors if the inputs are incorrect,
+     * - turns on the listener if the inputs are correct.
+     */
     private fun setComponents() {
         dialogBinding.applyDialogButton.setOnClickListener {
             if (shopItem.name.trim().isEmpty()) {

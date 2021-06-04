@@ -4,6 +4,9 @@ import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import pl.sokols.shoppinglist.data.entities.ShopItem
 
+/**
+ * DAO interface created to manage ShopItems.
+ */
 @Dao
 interface ShopItemDao {
 

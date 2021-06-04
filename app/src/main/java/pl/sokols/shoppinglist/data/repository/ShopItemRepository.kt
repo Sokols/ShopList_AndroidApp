@@ -6,6 +6,9 @@ import pl.sokols.shoppinglist.data.entities.ShopItem
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * Repository module with prepared ShopItem's methods.
+ */
 @Singleton
 class ShopItemRepository @Inject constructor(
     private val shopItemDao: ShopItemDao

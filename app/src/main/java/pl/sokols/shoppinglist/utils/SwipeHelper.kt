@@ -3,6 +3,9 @@ package pl.sokols.shoppinglist.utils
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
+/**
+ * Helper class created to prepare recyclerviews' items swipe.
+ */
 abstract class SwipeHelper(
     direction: Int
 ) : ItemTouchHelper.SimpleCallback(0, direction) {

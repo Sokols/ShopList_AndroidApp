@@ -18,7 +18,9 @@ import pl.sokols.shoppinglist.ui.adapters.DividerItemDecorator
 import pl.sokols.shoppinglist.ui.adapters.ListsAdapter
 import pl.sokols.shoppinglist.utils.*
 
-
+/**
+ * Fragment of current ShopLists.
+ */
 @AndroidEntryPoint
 class CurrentListsFragment : Fragment() {
 
@@ -37,6 +39,14 @@ class CurrentListsFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Method which:
+     * - adds adapter to recyclerview,
+     * - adds item decoration to recyclerview,
+     * - adds swipe RIGHT to unarchive,
+     * - adds swipe LEFT to remove,
+     * - adds listener for FAB.
+     */
     private fun setComponents() {
         binding.currentListsRecyclerView.adapter = listsAdapter
         binding.currentListsRecyclerView.addItemDecoration(
@@ -53,7 +63,7 @@ class CurrentListsFragment : Fragment() {
         addSwipeToDelete()
 
         binding.addListFAB.setOnClickListener {
-            addNewList(null , object : OnItemClickListener {
+            addEditNewList(null, object : OnItemClickListener {
                 override fun onItemClickListener(item: Any) {
                     viewModel.addShopList(item as ShopList)
                 }
@@ -61,14 +71,23 @@ class CurrentListsFragment : Fragment() {
         }
     }
 
+    /**
+     * Method which:
+     * - adds observer for all ShopLists and passes them to the adapter.
+     */
     private fun setObservers() {
-        viewModel.items.observe(viewLifecycleOwner, { shopList ->
-            listsAdapter.submitList(shopList) {
+        viewModel.items.observe(viewLifecycleOwner, { shopLists ->
+            listsAdapter.submitList(shopLists) {
                 binding.currentListsRecyclerView.scrollToPosition(0)
             }
         })
     }
 
+    /**
+     * Method which:
+     * - adds swipe to the RIGHT to unarchive for recyclerview items,
+     * - allows undo the operation.
+     */
     private fun addSwipeToArchive() {
         ItemTouchHelper(object : SwipeHelper(ItemTouchHelper.RIGHT) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -89,6 +108,10 @@ class CurrentListsFragment : Fragment() {
         }).attachToRecyclerView(binding.currentListsRecyclerView)
     }
 
+    /**
+     * Method which:
+     * - adds swipe to the LEFT to delete recyclerview items.
+     */
     private fun addSwipeToDelete() {
         ItemTouchHelper(object : SwipeHelper(ItemTouchHelper.LEFT) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -105,17 +128,23 @@ class CurrentListsFragment : Fragment() {
         }).attachToRecyclerView(binding.currentListsRecyclerView)
     }
 
-    private fun addNewList(shopList: ShopList?, listener: OnItemClickListener) {
+    /**
+     * Method which allows to add or edit a ShopList.
+     */
+    private fun addEditNewList(shopList: ShopList?, listener: OnItemClickListener) {
         ShopListDialog(shopList, listener).show(
             requireFragmentManager(),
             getString(R.string.provide_item_dialog)
         )
     }
 
+    /**
+     * Special listener created to allow editing of ShopLists.
+     */
     private val longClickListener = object : OnLongClickListener {
         override fun onLongClickListener(item: Any) {
             val shopListDetails = item as ShopListDetails
-            addNewList(shopListDetails.shopList, object : OnItemClickListener {
+            addEditNewList(shopListDetails.shopList, object : OnItemClickListener {
                 override fun onItemClickListener(item: Any) {
                     viewModel.updateShopList(item as ShopList)
                     listsAdapter.notifyDataSetChanged()

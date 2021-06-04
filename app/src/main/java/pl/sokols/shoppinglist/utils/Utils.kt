@@ -12,6 +12,9 @@ class Utils {
         const val SHOP_LIST_ID_KEY = "shop_list_id"
         const val SHOP_LIST_IS_ACTIVE_KEY = "shop_list_is_active"
 
+        /**
+         * Method which allows to display snackbars above the bottom navigation.
+         */
         fun getSnackbar(view: View, message: String, activity: Activity): Snackbar {
             val snackbar = Snackbar.make(
                 view,
@@ -22,6 +25,9 @@ class Utils {
             return snackbar
         }
 
+        /**
+         * Method which checks ShopItems which are checked.
+         */
         fun getChecked(shopItems: List<ShopItem>): Int {
             var checked = 0
             for (shopItem: ShopItem in shopItems) {

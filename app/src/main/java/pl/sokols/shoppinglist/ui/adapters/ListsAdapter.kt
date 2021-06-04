@@ -12,15 +12,20 @@ import pl.sokols.shoppinglist.databinding.ShopListListitemBinding
 import pl.sokols.shoppinglist.utils.OnLongClickListener
 import pl.sokols.shoppinglist.utils.Utils
 
+/**
+ * Adapter for recyclerview of ShopLists.
+ */
 class ListsAdapter(
     private val longClickListener: OnLongClickListener?
-) :
-    ListAdapter<ShopListDetails, ListsAdapter.ListsViewHolder>(ShopListDiffCallback) {
+) : ListAdapter<ShopListDetails, ListsAdapter.ListsViewHolder>(ShopListDiffCallback) {
 
     inner class ListsViewHolder(
         private val binding: ShopListListitemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
+        /**
+         * Method which allows to bind data.
+         */
         fun bind(shopList: ShopListDetails, longClickListener: OnLongClickListener?) {
             binding.shopList = shopList
 

@@ -17,14 +17,18 @@ import pl.sokols.shoppinglist.ui.adapters.DetailsAdapter
 import pl.sokols.shoppinglist.ui.adapters.DividerItemDecorator
 import pl.sokols.shoppinglist.utils.*
 
+/**
+ * Fragment of selected ShopItems.
+ */
 @AndroidEntryPoint
 class ListDetailsFragment : Fragment() {
 
     private lateinit var detailsAdapter: DetailsAdapter
     private lateinit var binding: ListDetailsFragmentBinding
     private val viewModel: ListDetailsViewModel by viewModels()
-    private var shopListId: Int? = null
+
     private var shopListIsActive: Boolean? = null
+    private var shopListId: Int? = null             // flag created to specify the calling Fragment
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +43,14 @@ class ListDetailsFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Method which:
+     * - adds adapter to recyclerview,
+     * - adds item decoration to recyclerview,
+     * - adds swipe LEFT to remove IF THE SHOPLIST IS ACTIVE,
+     * - adds listener for FAB IF THE SHOPLIST IS ACTIVE,
+     * - turns off the FAB IF THE SHOPLIST IS INACTIVE.
+     */
     private fun setComponents() {
         binding.listDetailsRecyclerView.adapter = detailsAdapter
         binding.listDetailsRecyclerView.addItemDecoration(
@@ -54,7 +66,7 @@ class ListDetailsFragment : Fragment() {
         if (shopListIsActive == true) {
             addSwipeToDelete()
             binding.addItemFAB.setOnClickListener {
-                addNewShopItem(null, object : OnItemClickListener {
+                addEditNewItem(null, object : OnItemClickListener {
                     override fun onItemClickListener(item: Any) {
                         viewModel.addShopItem(item as ShopItem)
                     }
@@ -65,6 +77,10 @@ class ListDetailsFragment : Fragment() {
         }
     }
 
+    /**
+     * Method which:
+     * - adds observer for all ShopItems and passes them to the adapter.
+     */
     private fun setObservers() {
         viewModel.items.observe(viewLifecycleOwner, { shopItems ->
             detailsAdapter.submitList(shopItems) {
@@ -73,13 +89,40 @@ class ListDetailsFragment : Fragment() {
         })
     }
 
-    private fun addNewShopItem(shopItem: ShopItem?, listener: OnItemClickListener) {
+    /**
+     * Method which:
+     * - adds swipe to the LEFT to delete recyclerview items.
+     */
+    private fun addSwipeToDelete() {
+        ItemTouchHelper(object : SwipeHelper(ItemTouchHelper.LEFT) {
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val deletedItem: ShopItem =
+                    detailsAdapter.currentList[viewHolder.adapterPosition]
+                viewModel.deleteShopItem(deletedItem)
+
+                Utils.getSnackbar(
+                    requireView(),
+                    String.format(getString(R.string.deleted), deletedItem.name),
+                    requireActivity()
+                ).show()
+            }
+        }).attachToRecyclerView(binding.listDetailsRecyclerView)
+    }
+
+    /**
+     * Method which allows to add or edit a ShopItem.
+     */
+    private fun addEditNewItem(shopItem: ShopItem?, listener: OnItemClickListener) {
         ShopItemDialog(shopItem, shopListId!!, listener).show(
             requireFragmentManager(),
             getString(R.string.provide_item_dialog)
         )
     }
 
+    /**
+     * Special listener created to allow archive the ShopItems.
+     */
     private val onCheckClickListener = object : OnItemClickListener {
         override fun onItemClickListener(item: Any) {
             val shopItem = item as ShopItem
@@ -103,26 +146,12 @@ class ListDetailsFragment : Fragment() {
         }
     }
 
-    private fun addSwipeToDelete() {
-        ItemTouchHelper(object : SwipeHelper(ItemTouchHelper.LEFT) {
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val deletedItem: ShopItem =
-                    detailsAdapter.currentList[viewHolder.adapterPosition]
-                viewModel.deleteShopItem(deletedItem)
-
-                Utils.getSnackbar(
-                    requireView(),
-                    String.format(getString(R.string.deleted), deletedItem.name),
-                    requireActivity()
-                ).show()
-            }
-        }).attachToRecyclerView(binding.listDetailsRecyclerView)
-    }
-
+    /**
+     * Special listener created to allow editing of ShopItems.
+     */
     private val longClickListener = object : OnLongClickListener {
         override fun onLongClickListener(item: Any) {
-            addNewShopItem(item as ShopItem, object : OnItemClickListener {
+            addEditNewItem(item as ShopItem, object : OnItemClickListener {
                 override fun onItemClickListener(item: Any) {
                     viewModel.updateShopItem(item as ShopItem)
                     detailsAdapter.notifyDataSetChanged()

@@ -11,6 +11,9 @@ import pl.sokols.shoppinglist.ui.adapters.DetailsAdapter.DetailsViewHolder
 import pl.sokols.shoppinglist.utils.OnItemClickListener
 import pl.sokols.shoppinglist.utils.OnLongClickListener
 
+/**
+ * Adapter for recyclerview of ShopItems.
+ */
 class DetailsAdapter(
     private val listener: OnItemClickListener,
     private val longClickListener: OnLongClickListener,
@@ -21,6 +24,9 @@ class DetailsAdapter(
         private val binding: ShopItemListitemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
+        /**
+         * Method which allows to bind data.
+         */
         fun bind(
             shopItem: ShopItem,
             listener: OnItemClickListener,

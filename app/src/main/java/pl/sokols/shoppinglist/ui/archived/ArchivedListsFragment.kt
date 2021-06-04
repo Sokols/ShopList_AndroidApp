@@ -12,13 +12,15 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sokols.shoppinglist.R
 import pl.sokols.shoppinglist.data.entities.ShopList
-import pl.sokols.shoppinglist.data.entities.ShopListDetails
 import pl.sokols.shoppinglist.databinding.ArchivedListsFragmentBinding
-import pl.sokols.shoppinglist.ui.adapters.ListsAdapter
 import pl.sokols.shoppinglist.ui.adapters.DividerItemDecorator
+import pl.sokols.shoppinglist.ui.adapters.ListsAdapter
 import pl.sokols.shoppinglist.utils.SwipeHelper
 import pl.sokols.shoppinglist.utils.Utils
 
+/**
+ * Fragment of archvied ShopLists.
+ */
 @AndroidEntryPoint
 class ArchivedListsFragment : Fragment() {
 
@@ -37,6 +39,13 @@ class ArchivedListsFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Method which:
+     * - adds adapter to recyclerview,
+     * - adds item decoration to recyclerview,
+     * - adds swipe RIGHT to unarchive,
+     * - adds swipe LEFT to remove.
+     */
     private fun setComponents() {
         binding.archivedListsRecyclerView.adapter = listsAdapter
         binding.archivedListsRecyclerView.addItemDecoration(
@@ -53,19 +62,28 @@ class ArchivedListsFragment : Fragment() {
         addSwipeToDelete()
     }
 
+    /**
+     * Method which:
+     * - adds observer for all ShopLists and passes them to the adapter.
+     */
     private fun setObservers() {
-        viewModel.items.observe(viewLifecycleOwner, { shopList ->
-            listsAdapter.submitList(shopList) {
+        viewModel.items.observe(viewLifecycleOwner, { shopLists ->
+            listsAdapter.submitList(shopLists) {
                 binding.archivedListsRecyclerView.scrollToPosition(0)
             }
         })
     }
 
+    /**
+     * Method which:
+     * - adds swipe to the RIGHT to unarchive for recyclerview items,
+     * - allows undo the operation.
+     */
     private fun addSwipeToUnarchive() {
         ItemTouchHelper(object : SwipeHelper(ItemTouchHelper.RIGHT) {
-
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val archivedList: ShopList = listsAdapter.currentList[viewHolder.adapterPosition].shopList
+                val archivedList: ShopList =
+                    listsAdapter.currentList[viewHolder.adapterPosition].shopList
                 archivedList.isActive = !archivedList.isActive
                 viewModel.updateShopList(archivedList)
 
@@ -81,6 +99,10 @@ class ArchivedListsFragment : Fragment() {
         }).attachToRecyclerView(binding.archivedListsRecyclerView)
     }
 
+    /**
+     * Method which:
+     * - adds swipe to the LEFT to delete recyclerview items.
+     */
     private fun addSwipeToDelete() {
         ItemTouchHelper(object : SwipeHelper(ItemTouchHelper.LEFT) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {

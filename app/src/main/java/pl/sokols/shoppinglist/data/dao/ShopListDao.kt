@@ -5,6 +5,9 @@ import kotlinx.coroutines.flow.Flow
 import pl.sokols.shoppinglist.data.entities.ShopList
 import pl.sokols.shoppinglist.data.entities.ShopListDetails
 
+/**
+ * DAO interface created to manage ShopLists.
+ */
 @Dao
 interface ShopListDao {
 

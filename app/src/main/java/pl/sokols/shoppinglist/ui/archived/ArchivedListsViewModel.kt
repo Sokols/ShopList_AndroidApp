@@ -11,6 +11,9 @@ import pl.sokols.shoppinglist.data.entities.ShopListDetails
 import pl.sokols.shoppinglist.data.repository.ShopListRepository
 import javax.inject.Inject
 
+/**
+ * ViewModel for the ArchivedLists fragment.
+ */
 @HiltViewModel
 class ArchivedListsViewModel @Inject constructor(
     private val shopListRepository: ShopListRepository
@@ -25,9 +28,5 @@ class ArchivedListsViewModel @Inject constructor(
 
     fun updateShopList(shopList: ShopList) = viewModelScope.launch {
         shopListRepository.updateShopList(shopList)
-    }
-
-    fun addShopList(shopList: ShopList) = viewModelScope.launch {
-        shopListRepository.insertShopList(shopList)
     }
 }
