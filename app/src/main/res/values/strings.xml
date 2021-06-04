@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">Shopping List</string>
+    <string name="shop_item_image_description">Basket image</string>
+    <string name="amount_format">Amount: %d</string>
+    <string name="check_image_description">Check image</string>
+    <string name="fab_content_desc">FAB button</string>
+    <string name="shop_list_image_description">Shop list image</string>
+    <string name="done_format">Groceries done: %s</string>
+    <string name="list_id">list_id</string>
+    <string name="provide_list_name">Provide list name:</string>
+    <string name="name">Name</string>
+    <string name="cancel">Cancel</string>
+    <string name="deleted">Removed: %s</string>
+    <string name="undo">Undo</string>
+    <string name="incorrect_value">Incorrect value!</string>
+    <string name="amount">Amount</string>
+    <string name="provide_item_dialog">Provide item dialog</string>
+    <string name="enter_data">Enter data</string>
+    <string name="apply">Apply</string>
+    <string name="archived">Archived: %s</string>
+    <string name="checked">Checked!</string>
+    <string name="unchecked">Unchecked!</string>
+    <string name="shopping_lists">Shopping Lists</string>
+    <string name="archived_lists">Archived Shopping Lists</string>
+    <string name="dearchived">De-archived: %s</string>
+    <string name="list_details">Shopping List Details</string>
 </resources>
